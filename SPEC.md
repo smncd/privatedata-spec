@@ -421,7 +421,7 @@ The plaintext JSON MUST follow the event-sourced wallet schema used by `wallet-f
 
 Normative requirements:
 
-- `S.schemaVersion` MUST be `4` for newly written state, and new events MUST carry `schemaVersion: 4`.
+- A base state of version 1 or 2 that a writer carries over unchanged keeps its `schemaVersion` and its keypair entries until event folding rewrites it; events appended to such a container MUST carry `schemaVersion: 4`. A version 3 base state MUST be written as version 4.
 - Migrating version 3 state to version 4 only sets `schemaVersion` to `4`.
 - A reader MUST read version 3 as `wallet-frontend` defines it, and version 4 as this document defines it. It SHOULD read versions 1 and 2 as `wallet-frontend` defines them. An absent `S.schemaVersion` means version 1.
 - A reader MUST refuse to rewrite a container that has a `schemaVersion` it does not implement, in `S` or in any event, an event without `schemaVersion`, or an event type that its versions do not define. It MUST report this as an unsupported version, not as a failed merge. A reader that cannot migrate version 1 or 2 (for example their key storage) treats them as versions it does not implement.
